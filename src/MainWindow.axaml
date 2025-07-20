@@ -2,18 +2,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Avalonia.Controls.ToolBar.Controls;assembly=Avalonia.Controls.ToolBar"
+        xmlns:toolbar="clr-namespace:MiniToolbar.Avalonia;assembly=MiniToolbar.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="src.MainWindow"
         Title="src">
+  <Window.Resources>
+  </Window.Resources>
   <DockPanel>
-    <Menu DockPanel.Dock="Top">
-      <MenuItem Header="_File">
-        <MenuItem Header="_Open"  />
-        <MenuItem Header="_Exit" />
-      </MenuItem>
-    </Menu>
+    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+      <Menu>
+        <MenuItem Header="_File">
+          <MenuItem Header="_Open"  />
+          <MenuItem Header="_Exit" />
+        </MenuItem>
+      </Menu>
+
+      <toolbar:Toolbar DisplayMode="Compact">
+        <toolbar:ToolbarLabel>Label</toolbar:ToolbarLabel>
+        <toolbar:ToolbarButton Text="Folder"  />
+        <toolbar:ToolbarButton Text="Deploy" />
+        <toolbar:ToolbarComboBox SelectedIndex="0">
+          <ComboBoxItem>Avalonia</ComboBoxItem>
+          <ComboBoxItem>.NET MAUI</ComboBoxItem>
+          <ComboBoxItem>WinForms</ComboBoxItem>
+        </toolbar:ToolbarComboBox>
+        <toolbar:ToolbarSeparator />
+        <toolbar:ToolbarCheckBox>Check</toolbar:ToolbarCheckBox>
+        <toolbar:ToolbarSeparator />
+      </toolbar:Toolbar>
+    </StackPanel>
+
+    <Panel x:Name="StatusBar" DockPanel.Dock="Bottom" Background="{DynamicResource SpecialControlBackgroundColor}">
+      <TextBlock Text="Status bar"/>
+    </Panel>
+    
     <Grid>
-      <TextBlock Text="Welcome to the STL Viewer!" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="2"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Panel Grid.Column="0" x:Name="FileExplorerPanel">
+        <TextBlock>File Explorer</TextBlock>
+      </Panel>
+      
+      <GridSplitter Grid.Column="1" ResizeDirection="Columns" Background="Blue" Width="2" MinWidth="2" />
+      
+      <Panel Grid.Column="2" x:Name="MainContentPanel">
+        <TextBlock Text="Main Content Area" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Panel>
+      
     </Grid>
   </DockPanel>
-</Window>
+</Window> 
