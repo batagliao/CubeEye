@@ -1,7 +1,8 @@
 ﻿using System;
 using Avalonia;
+using TheApplication;
 
-namespace src
+namespace TheApplication
 {
     internal class Program
     {

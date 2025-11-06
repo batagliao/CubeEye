@@ -1,11 +1,12 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:interop="using:TheApplication.Interop"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Avalonia.Controls.ToolBar.Controls;assembly=Avalonia.Controls.ToolBar"
         xmlns:toolbar="clr-namespace:MiniToolbar.Avalonia;assembly=MiniToolbar.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="src.MainWindow"
+        x:Class="TheApplication.MainWindow"
         Title="src">
   <Window.Resources>
   </Window.Resources>
@@ -45,7 +46,25 @@
       </Grid.ColumnDefinitions>
 
       <Panel Grid.Column="0" x:Name="FileExplorerPanel">
-        <TextBlock>File Explorer</TextBlock>
+        <TreeView Name="treeView" Margin="2,2,0,0" Width="250">
+        <TreeView.ItemContainerTheme>
+            <ControlTheme TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}" x:DataType="interop:FileSystemObjectInfo">
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                <Setter Property="MinHeight" Value="24"/>
+            </ControlTheme>
+        </TreeView.ItemContainerTheme>
+        <TreeView.DataTemplates>
+            <TreeDataTemplate DataType="interop:FileSystemObjectInfo" 
+                            ItemsSource="{Binding Children}"
+                            x:DataType="interop:FileSystemObjectInfo"
+                            x:CompileBindings="True">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{Binding ImageSource}" Margin="0,1,5,1" />
+                    <TextBlock Text="{Binding FileSystemInfo.Name}" FontSize="12" />
+                </StackPanel>
+            </TreeDataTemplate>
+      </TreeView.DataTemplates>
+    </TreeView>
       </Panel>
       
       <GridSplitter Grid.Column="1" ResizeDirection="Columns" Background="Blue" Width="2" MinWidth="2" />
