@@ -31,4 +31,8 @@
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Images\" />
+  </ItemGroup>
 </Project>

@@ -1,5 +1,8 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
+using System;
 using System.IO;
 using System.Linq;
 using TheApplication.Interop;
@@ -10,8 +13,14 @@ namespace TheApplication
     {
         public MainWindow()
         {
+            Application.Current!.ActualThemeVariantChanged += MainWindow_ActualThemeVariantChanged;
             InitializeComponent();
             InitializeFileSystemObjects();
+        }
+
+        private void MainWindow_ActualThemeVariantChanged(object? sender, System.EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         private void InitializeFileSystemObjects()

@@ -9,11 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace TheApplication.Interop
 {
     public class FileSystemObjectInfo : BaseObject
     {
+        private ThemeVariant currentTheme;
+
         public FileSystemObjectInfo(FileSystemInfo info) 
         {
             if (this is DummyFileSystemObjectInfo)
@@ -23,6 +26,8 @@ namespace TheApplication.Interop
 
             Children = new ObservableCollection<FileSystemObjectInfo>();
             FileSystemInfo = info;
+
+            SetIcon();
 
             if (info is DirectoryInfo)
             {
@@ -48,6 +53,7 @@ namespace TheApplication.Interop
         private void RaiseBeforeExpand()
         {
             BeforeExpand?.Invoke(this, EventArgs.Empty);
+            SetIcon();
         }
 
         private void RaiseAfterExpand()
@@ -95,10 +101,42 @@ namespace TheApplication.Interop
         }
         #endregion
 
+        private void SetIcon()
+        {
+            object resource;            
+            if (FileSystemInfo is DirectoryInfo) 
+            {
+                var dirinfo = FileSystemInfo as DirectoryInfo;
+                if (dirinfo!.Parent == null)
+                {
+                    Avalonia.Application.Current!.TryGetResource("DriveIconGeometry", currentTheme, out resource!);
+                }
+                else if (IsExpanded)
+                {
+                    Avalonia.Application.Current!.TryGetResource("FolderOpenGeometry", currentTheme, out resource!);
+                }
+                else
+                {
+                    Avalonia.Application.Current!.TryGetResource("FolderClosedGeometry", currentTheme, out resource!);
+                }
+            }
+            else //(FileSystemInfo is FileInfo)
+            {
+                Avalonia.Application.Current!.TryGetResource("FileIconGeometry", currentTheme, out resource!);
+            }
+  
+            IconGeometry = resource as Avalonia.Media.Geometry;
+        }
+
         public ObservableCollection<FileSystemObjectInfo> Children
         {
             get => GetValue<ObservableCollection<FileSystemObjectInfo>>(nameof(Children));
             set => SetValue(nameof(Children), value);
+        }
+
+        public Avalonia.Media.Geometry IconGeometry { 
+            get => GetValue<Avalonia.Media.Geometry>(nameof(IconGeometry));
+            set => SetValue(nameof(IconGeometry), value);
         }
 
         public IImage ImageSource
