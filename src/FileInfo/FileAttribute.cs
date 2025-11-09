@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheApplication.Interop
+namespace TheApplication.FileInfo
 {
-    public enum ItemState : short
+    public enum FileAttribute : uint
     {
-        Undefined,
-        Open,
-        Close
+        Directory = 16,
+        File = 256
     }
 }

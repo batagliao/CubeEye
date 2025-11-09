@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:interop="using:TheApplication.Interop"
+        xmlns:interop="using:TheApplication.FileInfo"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Avalonia.Controls.ToolBar.Controls;assembly=Avalonia.Controls.ToolBar"
         xmlns:toolbar="clr-namespace:MiniToolbar.Avalonia;assembly=MiniToolbar.Avalonia"
@@ -46,7 +46,7 @@
       </Grid.ColumnDefinitions>
 
       <Panel Grid.Column="0" x:Name="FileExplorerPanel">
-        <TreeView Name="treeView" Margin="2,2,0,0" Width="250">
+        <TreeView Name="treeView" Margin="2,2,0,0" >
         <TreeView.ItemContainerTheme>
             <ControlTheme TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}" x:DataType="interop:FileSystemObjectInfo">
                 <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />

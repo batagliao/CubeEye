@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheApplication.Interop
+namespace TheApplication.Controls
 {
-    public enum IconSize : short
+    public class OpenGLViewerControl
     {
-        Small,
-        Large
     }
 }

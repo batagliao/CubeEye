@@ -5,7 +5,7 @@ using Avalonia.Media;
 using System;
 using System.IO;
 using System.Linq;
-using TheApplication.Interop;
+using TheApplication.FileInfo;
 
 namespace TheApplication
 {

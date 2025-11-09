@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheApplication.Interop
+namespace TheApplication.FileInfo
 {
     public class DummyFileSystemObjectInfo : FileSystemObjectInfo
     {

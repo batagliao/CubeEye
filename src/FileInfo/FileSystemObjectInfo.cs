@@ -11,11 +11,13 @@ using System.Windows.Media;
 using Avalonia.Media;
 using Avalonia.Styling;
 
-namespace TheApplication.Interop
+namespace TheApplication.FileInfo
 {
     public class FileSystemObjectInfo : BaseObject
     {
         private ThemeVariant currentTheme;
+
+        private string[] _allowed_extensions = [".obj", ".stl", ".3mf"];
 
         public FileSystemObjectInfo(FileSystemInfo info) 
         {
@@ -31,13 +33,8 @@ namespace TheApplication.Interop
 
             if (info is DirectoryInfo)
             {
-                ImageSource = FolderManager.GetImageSource(info.FullName, ItemState.Close);
                 AddDummy();
-            }
-            else if (info is FileInfo)
-            {
-                ImageSource = FileManager.GetImageSource(info.FullName);
-            }
+            }           
 
             PropertyChanged += new PropertyChangedEventHandler(FileSystemObjectInfo_PropertyChanged);
         }
@@ -81,7 +78,6 @@ namespace TheApplication.Interop
                     RaiseBeforeExpand();
                     if (IsExpanded)
                     {
-                        ImageSource = FolderManager.GetImageSource(FileSystemInfo.FullName, ItemState.Open);
                         if (HasDummy())
                         {
                             RaiseBeforeExplore();
@@ -90,10 +86,6 @@ namespace TheApplication.Interop
                             ExploreFiles();
                             RaiseAfterExplore();
                         }
-                    }
-                    else
-                    {
-                        ImageSource = FolderManager.GetImageSource(FileSystemInfo.FullName, ItemState.Close);
                     }
                     RaiseAfterExpand();
                 }
@@ -137,12 +129,6 @@ namespace TheApplication.Interop
         public Avalonia.Media.Geometry IconGeometry { 
             get => GetValue<Avalonia.Media.Geometry>(nameof(IconGeometry));
             set => SetValue(nameof(IconGeometry), value);
-        }
-
-        public IImage ImageSource
-        {
-            get => GetValue<IImage>(nameof(ImageSource));
-            set => SetValue(nameof(ImageSource), value);
         }
 
         public bool IsExpanded
@@ -193,6 +179,7 @@ namespace TheApplication.Interop
                 var directories = dirInfo.GetDirectories();
                 foreach (var directory in directories.OrderBy(d => d.Name))
                 {
+                    // TODO: Have an option to show system and hidden
                     if ((directory.Attributes & FileAttributes.System) != FileAttributes.System &&
                         (directory.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
                     {
@@ -223,9 +210,10 @@ namespace TheApplication.Interop
             }
             if (FileSystemInfo is DirectoryInfo)
             {
-                var files = ((DirectoryInfo)FileSystemInfo).GetFiles();
+                var files = ((DirectoryInfo)FileSystemInfo).GetFiles().Where(f => _allowed_extensions.Contains(f.Extension));
                 foreach (var file in files.OrderBy(d => d.Name))
                 {
+                    // TODO: have an option to show system and hidden
                     if ((file.Attributes & FileAttributes.System) != FileAttributes.System &&
                         (file.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
                     {
